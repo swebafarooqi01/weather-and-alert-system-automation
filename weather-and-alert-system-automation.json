@@ -1,0 +1,183 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        160
+      ],
+      "id": "770dcc4f-9ee0-4c3d-803b-6471a050d7ca",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://openweathermap.org/api/one-call-3#current",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        160
+      ],
+      "id": "b99b77ea-8c85-4c40-a328-3af59299b0e4",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a5106c62-b468-4f6e-984f-682bf91b5cbc",
+              "leftValue": "{{ $json[\"current\"][\"weather\"][0][\"main\"] }}",
+              "rightValue": "Rain",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        160
+      ],
+      "id": "44288f34-6462-49a2-a2ce-16a95d1307dc",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U09DA0H0J4X",
+          "mode": "list",
+          "cachedResultName": "hilux"
+        },
+        "text": "hey, its raining",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        64
+      ],
+      "id": "878cca85-edb3-4da7-825d-c85bcceef752",
+      "name": "Send a message",
+      "webhookId": "b3489cf7-2afe-4312-b3a6-ee3a576cb971",
+      "credentials": {
+        "slackApi": {
+          "id": "WxTMDSOlA1Yj3gn3",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U09EGPY465N",
+          "mode": "list",
+          "cachedResultName": "swebafrq1"
+        },
+        "text": "hi, good morning",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        656,
+        256
+      ],
+      "id": "e66fcbd3-8a72-4e2f-9c08-a58b48958163",
+      "name": "Send a message2",
+      "webhookId": "3328a395-c6b6-43f2-ae9c-1495c7662f02",
+      "credentials": {
+        "slackApi": {
+          "id": "WxTMDSOlA1Yj3gn3",
+          "name": "Slack account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "87c33ebf-4801-487e-8816-e2106386e96d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8a6784ddd05f80b87830f16ebb1d3f4937caca5ec5eade4c555886b10557a441"
+  },
+  "id": "Fmm1h36qsMUzBO1C",
+  "tags": []
+}
